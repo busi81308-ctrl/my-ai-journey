@@ -6,13 +6,13 @@
   <title>我的 AI 进化之旅</title>
   <style>
     :root {
-      --blue-soft: #101a3a;
-      --blue-mid: #182a56;
-      --purple-soft: #7a6dff;
-      --pink-soft: #b78cff;
-      --text-main: #e9eeff;
-      --card-bg: rgba(22, 30, 66, 0.42);
-      --card-border: rgba(196, 206, 255, 0.36);
+      --blue-soft: #dceeff;
+      --blue-mid: #a9c9ff;
+      --purple-soft: #e8ddff;
+      --pink-soft: #ffdff0;
+      --text-main: #3f4d68;
+      --card-bg: rgba(255, 255, 255, 0.56);
+      --card-border: rgba(255, 255, 255, 0.65);
     }
 
     * {
@@ -28,11 +28,12 @@
       overflow-x: hidden;
       overflow-y: auto;
       background:
-        linear-gradient(135deg, rgba(12, 18, 44, 0.72), rgba(38, 24, 78, 0.6), rgba(20, 35, 82, 0.62)),
+        linear-gradient(135deg, rgba(220, 238, 255, 0.36), rgba(232, 221, 255, 0.3), rgba(255, 223, 240, 0.24)),
         url("bg.jpg") center / cover no-repeat fixed;
       position: relative;
       display: grid;
       place-items: center;
+      transition: background 0.5s ease, color 0.5s ease;
     }
 
     body::before {
@@ -40,13 +41,14 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(circle at 18% 14%, rgba(169, 138, 255, 0.22), rgba(169, 138, 255, 0) 45%),
-        radial-gradient(circle at 82% 20%, rgba(122, 197, 255, 0.18), rgba(122, 197, 255, 0) 46%),
-        rgba(12, 18, 41, 0.32);
-      backdrop-filter: blur(8px) saturate(1.1);
-      -webkit-backdrop-filter: blur(8px) saturate(1.1);
+        radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 48%),
+        radial-gradient(circle at 80% 25%, rgba(220, 231, 255, 0.28), rgba(220, 231, 255, 0) 50%),
+        rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(7px) saturate(1.06);
+      -webkit-backdrop-filter: blur(7px) saturate(1.06);
       pointer-events: none;
       z-index: 0;
+      transition: background 0.5s ease, backdrop-filter 0.5s ease, -webkit-backdrop-filter 0.5s ease;
     }
 
     .sky-glow {
@@ -55,11 +57,12 @@
       height: 68vmax;
       border-radius: 50%;
       filter: blur(26px);
-      opacity: 0.7;
+      opacity: 0.5;
       pointer-events: none;
       animation: drift 15s ease-in-out infinite;
-      background: radial-gradient(circle, rgba(180, 156, 255, 0.74) 0%, rgba(118, 211, 255, 0.34) 35%, rgba(255, 255, 255, 0) 67%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.62) 0%, rgba(201, 223, 255, 0.32) 35%, rgba(255, 255, 255, 0) 67%);
       z-index: 1;
+      transition: background 0.5s ease, opacity 0.5s ease;
     }
 
     .sky-glow.one {
@@ -78,15 +81,16 @@
       position: absolute;
       width: 300px;
       height: 88px;
-      background: rgba(199, 212, 255, 0.28);
+      background: rgba(255, 255, 255, 0.36);
       border-radius: 100px;
       filter: blur(1px);
       box-shadow:
-        60px -22px 0 15px rgba(191, 172, 255, 0.22),
-        126px 0 0 10px rgba(153, 212, 255, 0.2),
-        190px -15px 0 8px rgba(212, 182, 255, 0.18);
+        60px -22px 0 15px rgba(255, 255, 255, 0.28),
+        126px 0 0 10px rgba(235, 242, 255, 0.24),
+        190px -15px 0 8px rgba(255, 232, 246, 0.22);
       animation: cloud-move 32s linear infinite;
       z-index: 1;
+      transition: background 0.5s ease, box-shadow 0.5s ease;
     }
 
     .cloud.c1 {
@@ -120,17 +124,17 @@
     .lang-toggle {
       position: fixed;
       top: 18px;
-      right: 18px;
+      right: 74px;
       z-index: 30;
-      border: 1px solid rgba(196, 206, 255, 0.48);
+      border: 1px solid rgba(255, 255, 255, 0.74);
       border-radius: 999px;
       padding: 8px 14px;
       font-size: 0.9rem;
       font-weight: 800;
-      color: #e8edff;
+      color: #4f648d;
       letter-spacing: 1px;
-      background: linear-gradient(135deg, rgba(74, 112, 212, 0.72), rgba(117, 86, 218, 0.74), rgba(92, 180, 255, 0.65));
-      box-shadow: 0 10px 24px rgba(121, 118, 243, 0.32), 0 0 24px rgba(155, 136, 255, 0.25);
+      background: linear-gradient(135deg, rgba(219, 239, 255, 0.86), rgba(232, 219, 255, 0.82), rgba(255, 230, 244, 0.78));
+      box-shadow: 0 10px 20px rgba(108, 125, 173, 0.2);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       cursor: pointer;
@@ -139,7 +143,33 @@
 
     .lang-toggle:hover {
       transform: translateY(-2px);
-      filter: brightness(1.08);
+      filter: brightness(1.03);
+    }
+
+    .mode-toggle {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 30;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.74);
+      background: linear-gradient(135deg, rgba(255, 240, 186, 0.92), rgba(255, 205, 132, 0.86), rgba(255, 233, 206, 0.88));
+      color: #7b5b2f;
+      font-size: 1.1rem;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(203, 164, 99, 0.28);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: transform 0.2s ease, filter 0.2s ease, background 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .mode-toggle:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
     }
 
     .nav-card {
@@ -793,7 +823,41 @@
       letter-spacing: 1px;
     }
 
-    /* starlight preset overrides */
+    .dynamic-island {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-14px) scale(0.96);
+      z-index: 40;
+      min-width: 180px;
+      max-width: 82vw;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      background: linear-gradient(135deg, rgba(31, 39, 72, 0.82), rgba(52, 40, 94, 0.8), rgba(30, 57, 112, 0.76));
+      color: #f1f5ff;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      box-shadow:
+        0 14px 28px rgba(60, 72, 129, 0.36),
+        0 0 20px rgba(154, 131, 255, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.34);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      pointer-events: none;
+    }
+
+    .dynamic-island.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+
     .hero-card,
     .nav-card,
     .showcase-card,
@@ -801,53 +865,108 @@
     .video-card,
     .news-card,
     .intel-card,
-    .message-card {
+    .message-card,
+    .nav-link,
+    .intel-link,
+    .news-btn,
+    .follow-btn,
+    .send-btn,
+    .slider-btn,
+    .buy-btn {
+      transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease, color 0.5s ease, filter 0.5s ease;
+    }
+
+    body.dark-mode {
+      color: #e9eeff;
+      background:
+        linear-gradient(135deg, rgba(12, 18, 44, 0.72), rgba(38, 24, 78, 0.6), rgba(20, 35, 82, 0.62)),
+        url("bg.jpg") center / cover no-repeat fixed;
+    }
+
+    body.dark-mode::before {
+      background:
+        radial-gradient(circle at 18% 14%, rgba(169, 138, 255, 0.22), rgba(169, 138, 255, 0) 45%),
+        radial-gradient(circle at 82% 20%, rgba(122, 197, 255, 0.18), rgba(122, 197, 255, 0) 46%),
+        rgba(12, 18, 41, 0.32);
+      backdrop-filter: blur(8px) saturate(1.1);
+      -webkit-backdrop-filter: blur(8px) saturate(1.1);
+    }
+
+    body.dark-mode .sky-glow {
+      opacity: 0.7;
+      background: radial-gradient(circle, rgba(180, 156, 255, 0.74) 0%, rgba(118, 211, 255, 0.34) 35%, rgba(255, 255, 255, 0) 67%);
+    }
+
+    body.dark-mode .cloud {
+      background: rgba(199, 212, 255, 0.28);
+      box-shadow:
+        60px -22px 0 15px rgba(191, 172, 255, 0.22),
+        126px 0 0 10px rgba(153, 212, 255, 0.2),
+        190px -15px 0 8px rgba(212, 182, 255, 0.18);
+    }
+
+    body.dark-mode .mode-toggle {
+      background: linear-gradient(135deg, rgba(91, 120, 226, 0.82), rgba(123, 88, 224, 0.78), rgba(84, 176, 248, 0.72));
+      color: #eef2ff;
+      box-shadow: 0 10px 22px rgba(84, 98, 189, 0.34), 0 0 24px rgba(154, 130, 255, 0.22);
+    }
+
+    /* starlight preset overrides */
+    body.dark-mode .hero-card,
+    body.dark-mode .nav-card,
+    body.dark-mode .showcase-card,
+    body.dark-mode .section-item,
+    body.dark-mode .video-card,
+    body.dark-mode .news-card,
+    body.dark-mode .intel-card,
+    body.dark-mode .message-card {
       background: linear-gradient(135deg, rgba(24, 34, 74, 0.56), rgba(45, 32, 92, 0.5), rgba(20, 52, 110, 0.42));
       border: 1px solid rgba(183, 193, 255, 0.38);
       box-shadow:
         0 12px 30px rgba(64, 73, 140, 0.34),
         0 0 26px rgba(157, 136, 255, 0.18),
         inset 0 1px 0 rgba(227, 232, 255, 0.28);
+      transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
     }
 
-    .hero-card h1,
-    .nav-title,
-    .video-title,
-    .news-title,
-    .intel-title,
-    .message-title,
-    .photo-label,
-    .showcase-caption {
+    body.dark-mode .hero-card h1,
+    body.dark-mode .nav-title,
+    body.dark-mode .video-title,
+    body.dark-mode .news-title,
+    body.dark-mode .intel-title,
+    body.dark-mode .message-title,
+    body.dark-mode .photo-label,
+    body.dark-mode .showcase-caption {
       color: #edf1ff;
       text-shadow: 0 0 16px rgba(172, 168, 255, 0.36);
     }
 
-    .section-item,
-    .news-headline,
-    .photo-note,
-    .message-input,
-    .message-textarea {
+    body.dark-mode .section-item,
+    body.dark-mode .news-headline,
+    body.dark-mode .photo-note,
+    body.dark-mode .message-input,
+    body.dark-mode .message-textarea {
       color: #d9e3ff;
     }
 
-    .message-input,
-    .message-textarea {
+    body.dark-mode .message-input,
+    body.dark-mode .message-textarea {
       background: rgba(26, 39, 80, 0.55);
       border-color: rgba(177, 191, 255, 0.36);
       box-shadow: inset 0 1px 0 rgba(224, 229, 255, 0.2);
     }
 
-    .message-input::placeholder,
-    .message-textarea::placeholder {
+    body.dark-mode .message-input::placeholder,
+    body.dark-mode .message-textarea::placeholder {
       color: rgba(209, 223, 255, 0.64);
     }
 
-    .nav-link,
-    .intel-link,
-    .news-btn,
-    .follow-btn,
-    .send-btn,
-    .slider-btn {
+    body.dark-mode .nav-link,
+    body.dark-mode .intel-link,
+    body.dark-mode .news-btn,
+    body.dark-mode .follow-btn,
+    body.dark-mode .send-btn,
+    body.dark-mode .slider-btn {
       color: #eef2ff;
       border-color: rgba(186, 198, 255, 0.44);
       background: linear-gradient(135deg, rgba(82, 112, 216, 0.76), rgba(122, 88, 224, 0.72), rgba(93, 176, 255, 0.65));
@@ -857,12 +976,12 @@
         inset 0 1px 0 rgba(232, 236, 255, 0.34);
     }
 
-    .nav-link:hover,
-    .intel-link:hover,
-    .news-btn:hover,
-    .follow-btn:hover,
-    .send-btn:hover,
-    .slider-btn:hover {
+    body.dark-mode .nav-link:hover,
+    body.dark-mode .intel-link:hover,
+    body.dark-mode .news-btn:hover,
+    body.dark-mode .follow-btn:hover,
+    body.dark-mode .send-btn:hover,
+    body.dark-mode .slider-btn:hover {
       filter: brightness(1.12) saturate(1.08);
     }
 
@@ -934,6 +1053,7 @@
   <div class="sky-glow two"></div>
   <div class="cloud c1"></div>
   <div class="cloud c2"></div>
+  <button class="mode-toggle" id="modeToggle" type="button" aria-label="切换深夜模式">☀</button>
   <button class="lang-toggle" id="langToggle" type="button">中 / EN</button>
 
   <main class="wrapper">
@@ -967,8 +1087,8 @@
         </div>
         <div class="photo-slider" id="photoSlider">
           <figure class="photo-slide">
-            <img src="p1.jpg" alt="摄影集第一张" />
-            <figcaption class="photo-note">徕卡影调感言：光落在云端时，城市也变得温柔。</figcaption>
+            <img id="themeScenePhoto" src="photo1.jpg" alt="午后场景照片" />
+            <figcaption class="photo-note" id="themeSceneCaption">徕卡影调感言：午后光线像电影滤镜一样温柔。</figcaption>
           </figure>
           <figure class="photo-slide">
             <img src="p2.jpg" alt="摄影集第二张" />
@@ -1082,6 +1202,7 @@
   <div class="toast-overlay" id="toastOverlay" aria-live="polite">
     <div class="toast-box">感谢关注！消息已收到。</div>
   </div>
+  <div class="dynamic-island" id="dynamicIsland" aria-live="polite"></div>
 
   <script>
     (function () {
@@ -1140,6 +1261,65 @@
         card.addEventListener("mouseleave", stopPreview);
         card.addEventListener("focusin", playPreview);
         card.addEventListener("focusout", stopPreview);
+      });
+    })();
+
+    (function () {
+      const island = document.getElementById("dynamicIsland");
+      if (!island) return;
+
+      let islandTimer = null;
+      const showIsland = (message) => {
+        island.textContent = message;
+        island.classList.add("show");
+        window.clearTimeout(islandTimer);
+        islandTimer = window.setTimeout(() => {
+          island.classList.remove("show");
+        }, 3000);
+      };
+
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+
+        const actionEl = target.closest("a.buy-btn, a.follow-btn");
+        if (!actionEl) return;
+
+        const message = actionEl.matches(".buy-btn")
+          ? "已加入清单"
+          : "感谢您的关注！";
+        showIsland(message);
+      });
+    })();
+
+    (function () {
+      const modeToggle = document.getElementById("modeToggle");
+      const themeScenePhoto = document.getElementById("themeScenePhoto");
+      const themeSceneCaption = document.getElementById("themeSceneCaption");
+      if (!modeToggle) return;
+
+      const dayPhotoSrc = "photo1.jpg";
+      const nightPhotoSrc = "photo2.jpg";
+
+      const updateIcon = () => {
+        const isDark = document.body.classList.contains("dark-mode");
+        modeToggle.textContent = isDark ? "🌙" : "☀";
+        modeToggle.setAttribute("aria-label", isDark ? "切换为浅色模式" : "切换为深夜模式");
+        if (themeScenePhoto) {
+          themeScenePhoto.src = isDark ? nightPhotoSrc : dayPhotoSrc;
+          themeScenePhoto.alt = isDark ? "夜景场景照片" : "午后场景照片";
+        }
+        if (themeSceneCaption) {
+          themeSceneCaption.textContent = isDark
+            ? "徕卡影调感言：夜景落在镜头里，像一封写给星空的信。"
+            : "徕卡影调感言：午后光线像电影滤镜一样温柔。";
+        }
+      };
+
+      updateIcon();
+      modeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        updateIcon();
       });
     })();
 
