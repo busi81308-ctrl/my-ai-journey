@@ -299,25 +299,86 @@
     }
 
     .section-item.photo-card {
-      padding: 12px;
-      align-content: center;
+      padding: 14px;
+      align-content: start;
       gap: 10px;
     }
 
-    .photo-card img {
-      width: 100%;
-      height: 110px;
-      object-fit: cover;
-      border-radius: 14px;
-      box-shadow: 0 10px 22px rgba(102, 120, 170, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.65);
+    .photo-slider-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
     }
 
     .photo-label {
-      font-size: clamp(0.9rem, 1.5vw, 1rem);
-      font-weight: 600;
+      font-size: clamp(0.95rem, 1.5vw, 1.02rem);
+      font-weight: 700;
       color: #5d6f95;
       letter-spacing: 1px;
+    }
+
+    .slider-nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .slider-btn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.74);
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(221, 240, 255, 0.8), rgba(237, 223, 255, 0.75));
+      color: #5d6f95;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 16px rgba(110, 126, 172, 0.18);
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .slider-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.03);
+    }
+
+    .photo-slider {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 100%;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .photo-slider::-webkit-scrollbar {
+      display: none;
+    }
+
+    .photo-slide {
+      scroll-snap-align: start;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.44);
+      border: 1px solid rgba(255, 255, 255, 0.68);
+      box-shadow: 0 12px 22px rgba(102, 120, 170, 0.2);
+    }
+
+    .photo-slide img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-note {
+      padding: 9px 10px 11px;
+      font-size: 0.83rem;
+      color: rgba(93, 111, 149, 0.82);
+      letter-spacing: 1px;
+      text-align: center;
     }
 
     .video-card {
@@ -484,8 +545,27 @@
 
     <section class="sections">
       <article class="section-item photo-card">
-        <img src="myphoto.jpg" alt="AI 影像展示" />
-        <span class="photo-label">AI 影像</span>
+        <div class="photo-slider-header">
+          <span class="photo-label">AI 影像</span>
+          <div class="slider-nav">
+            <button class="slider-btn" type="button" data-dir="prev" aria-label="上一张">‹</button>
+            <button class="slider-btn" type="button" data-dir="next" aria-label="下一张">›</button>
+          </div>
+        </div>
+        <div class="photo-slider" id="photoSlider">
+          <figure class="photo-slide">
+            <img src="p1.jpg" alt="摄影集第一张" />
+            <figcaption class="photo-note">徕卡影调感言：光落在云端时，城市也变得温柔。</figcaption>
+          </figure>
+          <figure class="photo-slide">
+            <img src="p2.jpg" alt="摄影集第二张" />
+            <figcaption class="photo-note">徕卡影调感言：淡蓝与粉紫之间，藏着我想说的话。</figcaption>
+          </figure>
+          <figure class="photo-slide">
+            <img src="p3.jpg" alt="摄影集第三张" />
+            <figcaption class="photo-note">徕卡影调感言：每一次快门，都在记录 AI 与生活的交汇。</figcaption>
+          </figure>
+        </div>
       </article>
       <article class="section-item">自媒体成长</article>
       <article class="section-item">跨境电商探索</article>
@@ -522,5 +602,20 @@
       </div>
     </section>
   </main>
+  <script>
+    (function () {
+      const slider = document.getElementById("photoSlider");
+      const controls = document.querySelectorAll(".slider-btn");
+      if (!slider || controls.length === 0) return;
+
+      const slideStep = () => slider.clientWidth + 12;
+      controls.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const direction = btn.getAttribute("data-dir") === "next" ? 1 : -1;
+          slider.scrollBy({ left: direction * slideStep(), behavior: "smooth" });
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
