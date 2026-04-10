@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的 AI 进化之旅</title>
+  <style>
+    :root {
+      --blue-soft: #dceeff;
+      --blue-mid: #a9c9ff;
+      --purple-soft: #e8ddff;
+      --pink-soft: #ffdff0;
+      --text-main: #3f4d68;
+      --card-bg: rgba(255, 255, 255, 0.56);
+      --card-border: rgba(255, 255, 255, 0.65);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text-main);
+      overflow-x: hidden;
+      overflow-y: auto;
+      background:
+        linear-gradient(135deg, rgba(220, 238, 255, 0.28), rgba(232, 221, 255, 0.24), rgba(255, 223, 240, 0.2)),
+        url("bg.jpg") center / cover no-repeat fixed;
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(7px) saturate(1.06);
+      -webkit-backdrop-filter: blur(7px) saturate(1.06);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .sky-glow {
+      position: absolute;
+      width: 68vmax;
+      height: 68vmax;
+      border-radius: 50%;
+      filter: blur(26px);
+      opacity: 0.5;
+      pointer-events: none;
+      animation: drift 15s ease-in-out infinite;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 60%);
+      z-index: 1;
+    }
+
+    .sky-glow.one {
+      top: -28vmax;
+      left: -18vmax;
+    }
+
+    .sky-glow.two {
+      bottom: -32vmax;
+      right: -15vmax;
+      animation-delay: -7s;
+      opacity: 0.45;
+    }
+
+    .cloud {
+      position: absolute;
+      width: 300px;
+      height: 88px;
+      background: rgba(255, 255, 255, 0.36);
+      border-radius: 100px;
+      filter: blur(1px);
+      box-shadow:
+        60px -22px 0 15px rgba(255, 255, 255, 0.3),
+        126px 0 0 10px rgba(255, 255, 255, 0.26),
+        190px -15px 0 8px rgba(255, 255, 255, 0.23);
+      animation: cloud-move 32s linear infinite;
+      z-index: 1;
+    }
+
+    .cloud.c1 {
+      top: 12%;
+      left: -340px;
+      animation-duration: 34s;
+    }
+
+    .cloud.c2 {
+      top: 24%;
+      left: -360px;
+      transform: scale(0.85);
+      opacity: 0.8;
+      animation-duration: 44s;
+      animation-delay: -15s;
+    }
+
+    .wrapper {
+      width: min(1000px, 92vw);
+      display: grid;
+      gap: 26px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .nav-card {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.46);
+      border: 1px solid rgba(255, 255, 255, 0.64);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 12px 30px rgba(106, 123, 170, 0.18);
+      display: grid;
+      gap: 14px;
+    }
+
+    .nav-title {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 700;
+      color: #5a6d95;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    .nav-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .nav-link {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 82px;
+      padding: 14px 12px;
+      border-radius: 18px;
+      text-align: center;
+      text-decoration: none;
+      color: #4f648d;
+      font-weight: 700;
+      line-height: 1.45;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      background: linear-gradient(135deg, rgba(222, 241, 255, 0.8), rgba(232, 221, 255, 0.78), rgba(255, 230, 244, 0.72));
+      box-shadow:
+        0 0 0 rgba(177, 211, 255, 0.35),
+        0 10px 24px rgba(122, 138, 183, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      overflow: hidden;
+      transition: transform 0.25s ease, filter 0.25s ease;
+      animation: breathe 3.8s ease-in-out infinite;
+    }
+
+    .nav-link::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.06));
+      transform: translateX(-120%);
+      animation: shimmer 5.5s linear infinite;
+      pointer-events: none;
+    }
+
+    .nav-link:hover {
+      transform: translateY(-4px) scale(1.01);
+      filter: brightness(1.03) saturate(1.06);
+    }
+
+    .showcase-card {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.48);
+      border: 1px solid rgba(255, 255, 255, 0.62);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 12px 30px rgba(106, 123, 170, 0.18);
+      display: grid;
+      gap: 14px;
+    }
+
+    .showcase-player {
+      width: 100%;
+      height: clamp(180px, 28vw, 320px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 55%),
+        linear-gradient(135deg, rgba(220, 238, 255, 0.55), rgba(232, 221, 255, 0.52), rgba(255, 223, 240, 0.5));
+      box-shadow:
+        0 12px 26px rgba(101, 118, 168, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      display: grid;
+      place-items: center;
+      color: rgba(79, 100, 141, 0.8);
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .showcase-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .showcase-caption {
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      font-weight: 700;
+      color: #596d94;
+      letter-spacing: 1px;
+    }
+
+    .follow-btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: rgba(60, 74, 108, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      background: linear-gradient(135deg, rgba(167, 206, 255, 0.92), rgba(230, 200, 255, 0.88), rgba(255, 209, 233, 0.9));
+      box-shadow:
+        0 10px 22px rgba(112, 129, 177, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      transition: transform 0.22s ease, filter 0.22s ease, box-shadow 0.22s ease;
+      white-space: nowrap;
+    }
+
+    .follow-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.03) saturate(1.06);
+      box-shadow:
+        0 14px 26px rgba(112, 129, 177, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.88);
+    }
+
+    .hero-card {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 26px;
+      padding: 42px 28px;
+      text-align: center;
+      box-shadow:
+        0 18px 38px rgba(106, 123, 170, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.62);
+    }
+
+    .hero-card h1 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #51658e;
+      text-shadow: 0 2px 8px rgba(255, 255, 255, 0.65);
+    }
+
+    .sections {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .section-item {
+      min-height: 148px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 600;
+      color: #5d6f95;
+      letter-spacing: 1px;
+      box-shadow: 0 10px 25px rgba(121, 137, 183, 0.16);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .section-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 28px rgba(121, 137, 183, 0.24);
+    }
+
+    .section-item.photo-card {
+      padding: 12px;
+      align-content: center;
+      gap: 10px;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 14px;
+      box-shadow: 0 10px 22px rgba(102, 120, 170, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+    }
+
+    .photo-label {
+      font-size: clamp(0.9rem, 1.5vw, 1rem);
+      font-weight: 600;
+      color: #5d6f95;
+      letter-spacing: 1px;
+    }
+
+    .video-card {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.48);
+      border: 1px solid rgba(255, 255, 255, 0.62);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 12px 30px rgba(106, 123, 170, 0.18);
+      display: grid;
+      gap: 12px;
+    }
+
+    .video-title {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 700;
+      color: #596d94;
+      letter-spacing: 1px;
+    }
+
+    .video-player {
+      width: 100%;
+      display: block;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 10px 22px rgba(101, 118, 168, 0.18);
+    }
+
+    .intel-card {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.48);
+      border: 1px solid rgba(255, 255, 255, 0.62);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 12px 30px rgba(106, 123, 170, 0.18);
+      display: grid;
+      gap: 12px;
+    }
+
+    .intel-title {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 700;
+      color: #596d94;
+      letter-spacing: 1px;
+    }
+
+    .intel-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .intel-link {
+      text-decoration: none;
+      color: #556a93;
+      font-weight: 600;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      text-align: center;
+      padding: 12px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.68);
+      background: linear-gradient(135deg, rgba(220, 238, 255, 0.76), rgba(232, 221, 255, 0.72), rgba(255, 223, 240, 0.68));
+      box-shadow:
+        0 8px 18px rgba(112, 129, 177, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+    }
+
+    .intel-link:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 12px 22px rgba(112, 129, 177, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      filter: saturate(1.08);
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        box-shadow:
+          0 0 0 rgba(177, 211, 255, 0.28),
+          0 10px 24px rgba(122, 138, 183, 0.18),
+          inset 0 1px 0 rgba(255, 255, 255, 0.78);
+      }
+      50% {
+        box-shadow:
+          0 0 22px rgba(178, 223, 255, 0.38),
+          0 0 42px rgba(230, 210, 255, 0.24),
+          0 14px 28px rgba(122, 138, 183, 0.24),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      }
+    }
+
+    @keyframes shimmer {
+      from {
+        transform: translateX(-120%);
+      }
+      to {
+        transform: translateX(120%);
+      }
+    }
+
+    @keyframes cloud-move {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(calc(100vw + 420px));
+      }
+    }
+
+    @keyframes drift {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      50% {
+        transform: translate(22px, -16px) scale(1.05);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .nav-links,
+      .sections {
+        grid-template-columns: 1fr;
+      }
+
+      .intel-links {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card {
+        padding: 34px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sky-glow one"></div>
+  <div class="sky-glow two"></div>
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+
+  <main class="wrapper">
+    <section class="nav-card">
+      <h2 class="nav-title">AI 导航</h2>
+      <div class="nav-links">
+        <a class="nav-link" href="https://www.waytoagi.com/" target="_blank" rel="noopener noreferrer">
+          WaytoAGI<br />（国内最全的 AI 工具站）
+        </a>
+        <a class="nav-link" href="https://github.com/trending" target="_blank" rel="noopener noreferrer">
+          GitHub Trending<br />（看全球每天什么 AI 项目最火）
+        </a>
+        <a class="nav-link" href="https://claude.ai/" target="_blank" rel="noopener noreferrer">
+          Claude.ai<br />（你现在用的最强 AI 之一）
+        </a>
+      </div>
+    </section>
+
+    <section class="hero-card">
+      <h1>我的 AI 进化之旅</h1>
+    </section>
+
+    <section class="sections">
+      <article class="section-item photo-card">
+        <img src="myphoto.jpg" alt="AI 影像展示" />
+        <span class="photo-label">AI 影像</span>
+      </article>
+      <article class="section-item">自媒体成长</article>
+      <article class="section-item">跨境电商探索</article>
+    </section>
+
+    <section class="showcase-card">
+      <div class="showcase-player" aria-label="Video Player 占位区域">Video Player</div>
+      <div class="showcase-meta">
+        <div class="showcase-caption">小米 15 镜头下的 AI 世界</div>
+        <a class="follow-btn" href="#" role="button">关注我的自媒体</a>
+      </div>
+    </section>
+
+    <section class="video-card">
+      <h2 class="video-title">我的剪辑作品集</h2>
+      <video class="video-player" controls preload="metadata">
+        <source src="myvideo.mp4" type="video/mp4" />
+        你的浏览器暂不支持视频播放，请更换浏览器后重试。
+      </video>
+    </section>
+
+    <section class="intel-card">
+      <h2 class="intel-title">AI 情报站</h2>
+      <div class="intel-links">
+        <a class="intel-link" href="https://github.com/trending" target="_blank" rel="noopener noreferrer">
+          GitHub Trending<br />（全球最火开源项目）
+        </a>
+        <a class="intel-link" href="https://huggingface.co/" target="_blank" rel="noopener noreferrer">
+          Hugging Face<br />（AI模型大本营）
+        </a>
+        <a class="intel-link" href="https://blog.google/technology/ai/" target="_blank" rel="noopener noreferrer">
+          Google AI Blog<br />（官方前沿技术）
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
