@@ -1190,17 +1190,46 @@
       </div>
     </section>
  
+    <!-- ===== 服务计算器 ===== -->
+    <section class="message-card" id="calculatorCard">
+      <h2 class="message-title">🧮 服务报价计算器</h2>
+      <div style="margin-top:14px;">
+        <label style="font-size:0.82rem;font-weight:700;color:#7a92be;letter-spacing:0.5px;display:block;margin-bottom:6px;">选择服务类型</label>
+        <select id="serviceSelect" style="width:100%;border:1px solid rgba(200,220,255,0.7);border-radius:14px;background:rgba(255,255,255,0.62);color:#4b618b;font-size:0.95rem;font-weight:600;padding:10px 14px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;transition:border-color 0.2s,box-shadow 0.2s;">
+          <option value="">-- 请选择服务 --</option>
+          <option value="personal_web|个人网页制作|¥800 起">🌐 个人网页制作</option>
+          <option value="video_edit|视频剪辑|¥300 起 / 条">🎬 视频剪辑</option>
+          <option value="ai_automation|AI 内容自动化|¥1,500 起 / 套">🤖 AI 内容自动化</option>
+          <option value="photo_edit|摄影后期精修|¥150 起 / 组">📷 摄影后期精修</option>
+          <option value="brand_kit|品牌视觉套件|¥2,000 起">✨ 品牌视觉套件</option>
+        </select>
+      </div>
+      <div id="quoteDisplay" style="display:none;margin-top:14px;padding:14px 16px;border-radius:16px;border:1px solid rgba(180,210,255,0.55);background:linear-gradient(135deg,rgba(224,238,255,0.65),rgba(237,228,255,0.58));transition:all 0.3s ease;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div>
+            <p style="font-size:0.78rem;color:#8aa3cc;font-weight:600;margin-bottom:2px;">已选服务</p>
+            <p id="quoteService" style="font-size:0.95rem;font-weight:800;color:#4f648d;"></p>
+          </div>
+          <div style="text-align:right;">
+            <p style="font-size:0.78rem;color:#8aa3cc;font-weight:600;margin-bottom:2px;">预估基础报价</p>
+            <p id="quotePrice" style="font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,#6fa8f5,#a07ef5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></p>
+          </div>
+        </div>
+        <p style="font-size:0.74rem;color:#a0b4d0;margin-top:8px;line-height:1.5;">✦ 以上为基础报价，实际价格视需求复杂度而定。提交留言后我会尽快与你确认。</p>
+      </div>
+    </section>
+ 
+    <!-- ===== 联系表单 ===== -->
     <section class="message-card">
       <h2 class="message-title">给我的AI之旅留言</h2>
       <form class="message-form" id="messageForm">
-        <!-- Web3Forms Access Key -->
         <input type="hidden" name="access_key" value="dd74a72b-9f95-4c3e-b0f2-fe707a91db88" />
-        <!-- 邮件主题 -->
         <input type="hidden" name="subject" value="我的AI之旅 - 新留言" />
-        <!-- 防机器人蜜罐字段，必须留空 -->
         <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off" />
+        <input type="hidden" id="hiddenService" name="selected_service" value="未选择" />
+        <input type="hidden" id="hiddenPrice" name="estimated_price" value="未选择" />
         <input class="message-input" id="nicknameInput" name="name" type="text" placeholder="昵称" required />
-        <textarea class="message-textarea" id="contentInput" name="message" placeholder="留言内容" required></textarea>
+        <textarea class="message-textarea" id="contentInput" name="message" placeholder="留言内容（可描述你的需求详情）" required></textarea>
         <button class="send-btn" type="submit" id="submitBtn">发送</button>
       </form>
     </section>
@@ -1630,6 +1659,49 @@
       }
     })();
  
+ 
+    // ===== 服务计算器逻辑 =====
+    (function () {
+      const select       = document.getElementById("serviceSelect");
+      const quoteDisplay = document.getElementById("quoteDisplay");
+      const quoteService = document.getElementById("quoteService");
+      const quotePrice   = document.getElementById("quotePrice");
+      const hiddenService= document.getElementById("hiddenService");
+      const hiddenPrice  = document.getElementById("hiddenPrice");
+      if (!select) return;
+ 
+      select.addEventListener("change", function () {
+        const val = this.value;
+        if (!val) {
+          quoteDisplay.style.display = "none";
+          if (hiddenService) hiddenService.value = "未选择";
+          if (hiddenPrice)   hiddenPrice.value   = "未选择";
+          return;
+        }
+        const parts = val.split("|");
+        const serviceName = parts[1] || "";
+        const price       = parts[2] || "";
+ 
+        if (quoteService) quoteService.textContent = serviceName;
+        if (quotePrice)   quotePrice.textContent   = price;
+        if (hiddenService) hiddenService.value = serviceName;
+        if (hiddenPrice)   hiddenPrice.value   = price;
+ 
+        // 显示报价卡片（带动画）
+        quoteDisplay.style.display = "block";
+        quoteDisplay.style.opacity = "0";
+        quoteDisplay.style.transform = "translateY(8px)";
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            quoteDisplay.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+            quoteDisplay.style.opacity = "1";
+            quoteDisplay.style.transform = "translateY(0)";
+          });
+        });
+      });
+    })();
+ 
   </script>
 </body>
 </html>
+ 
